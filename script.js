@@ -10,7 +10,7 @@ const noteForm = document.querySelector('.note-form');
 const sortForm = document.querySelector('.sort-form');
 const addCategoryForm = document.querySelector('.add-category-form');
 let categoryList = [];
-let todoArray = [];
+const todoArray = [];
 
 let listHeight = window.innerHeight - 20 - 50 - 50 - (10*2);
 listContainer.style.height = `${listHeight - (listHeight % 33) - 3 - 10}px`;
@@ -19,7 +19,7 @@ window.onresize = () => {
 	listContainer.style.height = `${listHeight - (listHeight % 33) - 3 - 10}px`;
 };
 
-class todoInfo {
+class TodoInfo {
 	constructor(title, importance, dueDate, index, notes, category) {
 		this.title = title;
 		this.importance = importance;
@@ -31,46 +31,52 @@ class todoInfo {
 		} else {
 			this.category = category;
 		}
-		this.today = new Date();
-	}
-
-	getStartDate() {
-		return (`${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`);
 	}
 
 	get title() {
 		return this._title;
 	}
+
 	set title(value) {
 		this._title = value;
 	}
+
 	get importance() {
 		return this._importance;
 	}
+
 	set importance(value) {
 		this._importance = value;
 	}
+
 	get dueDate() {
 		return this._dueDate;
 	}
+
 	set dueDate(value) {
 		this._dueDate = value;
 	}
+
 	get index() {
 		return this._index;
 	}
+
 	set index(value) {
 		this._index = value;
 	}
+
 	get notes() {
 		return this._notes;
 	}
+
 	set notes(value) {
 		this._notes = value;
 	}
+
 	get category() {
 		return this._category;
 	}
+
 	set category(value) {
 		this._category = value;
 	}
@@ -87,10 +93,10 @@ function loadData() {
   if (localStorage.getItem('todoArray')) {
     const newArray = JSON.parse(localStorage.getItem('todoArray'));
     for (let item of newArray) {
-      todoArray.push(Object.assign(new todoInfo(), item));
+      todoArray.push(Object.assign(new TodoInfo(), item));
     }
   } else {
-    todoArray.push(new todoInfo('test', 'low', '2023-02-18', 0, 'Temp line item: delete me if you would like.', 'default'));
+    todoArray.push(new TodoInfo('test', 'low', '2023-02-18', 0, 'Temp line item: delete me if you would like.', 'default'));
   }
 }
 loadData();
@@ -193,14 +199,6 @@ function todoFactory(todoItem) {
 	createEditSvg();
 	createDeleteSvg();
 }
-// Temporarily initialize a few test todo items
-// function tempCreateItems() {
-// 	todoArray[0] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-// 	todoArray[1] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-// 	todoArray[2] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-// 	todoArray[3] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-// }
-// tempCreateItems();
 
 function generateList(sortBy) {
 	while (listContainer.firstChild) {
@@ -276,7 +274,7 @@ function deleteItem(index) {
 	generateList();
 }
 function generateCategories() {
-	let categorySelect = []; 
+	const categorySelect = []; 
 	categorySelect.push(addForm.querySelector('[name="category"]'));
 	categorySelect.push(editForm.querySelector('[name="category"]'));
 	categorySelect.push(sortForm.querySelector('[name="sort-select"]'));
@@ -324,7 +322,7 @@ addForm.addEventListener('submit', (event) => {
 	const importance = addForm.querySelector('[name="importance"]').value;
 	const notes = addForm.querySelector('[name="notes"]').value;
 	const category = addForm.querySelector('[name="category"]').value;
-	todoArray.push(new todoInfo(title, importance, dueDate, (todoArray.length), notes, category));
+	todoArray.push(new TodoInfo(title, importance, dueDate, (todoArray.length), notes, category));
 	generateList();
 	exitModal();
 });
@@ -341,7 +339,6 @@ sortForm.addEventListener('submit', (event) => {
 const sortText = document.querySelector('.sort-text');
 const addCategoryText = document.querySelector('.add-category-text');
 sortText.addEventListener('click', () => {
-	const sortForm = document.querySelector('.sort-form');
 	if (sortForm.style.display === 'flex') {
 		sortForm.style.animation = 'collapseForm 0.4s forwards';
 		setTimeout(() => {  sortForm.style.display = 'none'; }, 390);
@@ -351,7 +348,6 @@ sortText.addEventListener('click', () => {
 	}
 });
 addCategoryText.addEventListener('click', () => {
-	const addCategoryForm = document.querySelector('.add-category-form');
 	if (addCategoryForm.style.display === 'flex') {
 		addCategoryForm.style.animation = 'collapseForm 0.4s forwards';
 		setTimeout(() => {  addCategoryForm.style.display = 'none'; }, 390);
