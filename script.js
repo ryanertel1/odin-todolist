@@ -9,16 +9,16 @@ const editForm = document.querySelector('.edit-form');
 const noteForm = document.querySelector('.note-form');
 const sortForm = document.querySelector('.sort-form');
 const addCategoryForm = document.querySelector('.add-category-form');
-let categoryList = ['default'];
+let categoryList = [];
+let todoArray = [];
 
 let listHeight = window.innerHeight - 20 - 50 - 50 - (10*2);
 listContainer.style.height = `${listHeight - (listHeight % 33) - 3 - 10}px`;
-onresize = (event) => {
+window.onresize = () => {
 	listHeight = window.innerHeight - 20 - 50 - 50 - (10*2);
 	listContainer.style.height = `${listHeight - (listHeight % 33) - 3 - 10}px`;
 };
 
-let todoArray = [];
 class todoInfo {
 	constructor(title, importance, dueDate, index, notes, category) {
 		this.title = title;
@@ -75,12 +75,30 @@ class todoInfo {
 		this._category = value;
 	}
 }
+function loadData() {
+  if (!localStorage.getItem('categoryList')) {
+    categoryList.push('default');
+    localStorage.setItem('categoryList', JSON.stringify(categoryList)); 
+  } else {
+    // set values from storage
+    categoryList = JSON.parse(localStorage.getItem('categoryList'));
+  }
+  
+  if (localStorage.getItem('todoArray')) {
+    const newArray = JSON.parse(localStorage.getItem('todoArray'));
+    for (let item of newArray) {
+      todoArray.push(new todoInfo(item._title, item._importance, item._dueDate, item._index, item._notes, item._category));
+    }
+  }
+}
+loadData();
+
 function todoFactory(todoItem) {
-	newTodo = document.createElement('div');
+	const newTodo = document.createElement('div');
 	newTodo.classList.add('todo-item');
 	newTodo.dataset.index = todoItem.index;
 
-	newImportance = document.createElement('div');
+	const newImportance = document.createElement('div');
 	newImportance.classList.add('importance-mark');
 	switch (todoItem.importance) {
 		case 'low':
@@ -92,6 +110,8 @@ function todoFactory(todoItem) {
 		case 'high':
 			newImportance.classList.add('high-importance');
 			break;
+    default: 
+      newImportance.classList.add('low-importance');
 	}
 
 	function createDragSvg() {
@@ -154,11 +174,11 @@ function todoFactory(todoItem) {
 		});
 	}
 
-	newTitle = document.createElement('text');
+	const newTitle = document.createElement('text');
 	newTitle.classList.add('title-text');
 	newTitle.innerHTML = todoItem.title;
 
-	newDueDate = document.createElement('text');
+	const newDueDate = document.createElement('text');
 	newDueDate.classList.add('date-text');
 	newDueDate.innerHTML = todoItem.dueDate;
 
@@ -172,30 +192,13 @@ function todoFactory(todoItem) {
 	createDeleteSvg();
 }
 // Temporarily initialize a few test todo items
-function tempCreateItems() {
-	todoArray[0] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-	todoArray[1] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[2] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[3] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-	todoArray[4] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[5] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[6] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-	todoArray[7] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[8] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[9] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-	todoArray[10] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[11] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[12] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[13] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[14] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-	todoArray[15] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[16] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[17] = new todoInfo('third', 'high', '2023-02-17', 2, '');
-	todoArray[18] = new todoInfo('first', 'low', '2023-02-13', 0, '');
-	todoArray[19] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
-	todoArray[20] = new todoInfo('third', 'high', '2023-02-17', 2, '');	
-}
-tempCreateItems();
+// function tempCreateItems() {
+// 	todoArray[0] = new todoInfo('first', 'low', '2023-02-13', 0, '');
+// 	todoArray[1] = new todoInfo('second', 'medium', '2023-02-15', 1, '');
+// 	todoArray[2] = new todoInfo('third', 'high', '2023-02-17', 2, '');
+// 	todoArray[3] = new todoInfo('first', 'low', '2023-02-13', 0, '');
+// }
+// tempCreateItems();
 
 function generateList(sortBy) {
 	while (listContainer.firstChild) {
@@ -209,6 +212,7 @@ function generateList(sortBy) {
 		}
 		newIndex++;
 	}
+  localStorage.setItem('todoArray', JSON.stringify(todoArray));
 }
 function exitModal() {
 	addForm.style.display = 'none';
@@ -286,6 +290,7 @@ function generateCategories() {
 		categorySelect[1].add(new Option(category[0].toUpperCase() + category.substring(1), category));
 		categorySelect[2].add(new Option(category[0].toUpperCase() + category.substring(1), category));
 	}
+  localStorage.setItem('categoryList', JSON.stringify(categoryList));
 
 }
 
@@ -331,8 +336,8 @@ sortForm.addEventListener('submit', (event) => {
 	generateList(sortForm.querySelector('[name="sort-select"]').value);
 });
 
-sortText = document.querySelector('.sort-text');
-addCategoryText = document.querySelector('.add-category-text');
+const sortText = document.querySelector('.sort-text');
+const addCategoryText = document.querySelector('.add-category-text');
 sortText.addEventListener('click', () => {
 	const sortForm = document.querySelector('.sort-form');
 	if (sortForm.style.display === 'flex') {
