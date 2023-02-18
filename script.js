@@ -89,6 +89,8 @@ function loadData() {
     for (let item of newArray) {
       todoArray.push(new todoInfo(item._title, item._importance, item._dueDate, item._index, item._notes, item._category));
     }
+  } else {
+    todoArray.push(new todoInfo('test', 'low', '2023-02-18', 0, 'Temp line item: delete me if you would like.', 'default'));
   }
 }
 loadData();
