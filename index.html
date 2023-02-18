@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>To-Do List</title>
+	<script src="script.js" defer></script>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div class='list-container'></div>
+	<div class='header'>
+		<text>To-Do List</text>
+		<div class='menu-container'>
+			<div class='sort-container'>
+				<text class='sort-text'>Sort</text>
+				<form class='sort-form'>
+					<select name='sort-select'></select>
+					<input type='submit' name='sort-submit'>
+				</form>
+			</div>
+			<div class='add-category-container'>
+				<text class='add-category-text'>Add Category</text>
+				<form class='add-category-form'>
+					<input type='text' name='add-category-text'>
+					<input type='submit' name='add-category-submit'>
+				</form>
+			</div>
+		</div>
+		<svg class='menu-icon' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+			<path d="M0 0h24v24H0z" fill="none" />
+			<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+		</svg>
+	</div>
+	<svg class='add-button' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<title>plus-circle-outline</title>
+		<path
+			d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z" />
+	</svg>
+	<div class='add-modal'>
+		<form action='' method='post' class='add-form'>
+			<div class='input-container title-input'>
+				<input type='text' name='title'>
+				<label for='title'>Title</label>
+			</div>
+			<div class='input-container date-input'>
+				<input type='date' name='dueDate'>
+				<label for='dueDate'>Due Date</label>
+			</div>
+			<div class='input-container importance-input'>
+				<select name='importance'>
+					<option value='low'>Low</option>
+					<option value='medium'>Medium</option>
+					<option value='high'>High</option>
+				</select>
+				<label for='importance'>Importance</label>
+			</div>
+			<div class='input-container category-input'>
+				<select name='category'></select>
+				<label for='category'>Category</label>
+			</div>
+			<div class='input-container notes-input'>
+				<input type='textarea' name='notes'>
+				<label for='Notes'>Notes</label>
+			</div>
+			<input type='submit' class='submit-button'>
+		</form>
+		<form action='' method='post' class='edit-form'>
+			<div class='input-container title-input'>
+				<input type='text' name='title'>
+				<label for='title'>Title</label>
+			</div>
+			<div class='input-container date-input'>
+				<input type='date' name='dueDate'>
+				<label for='dueDate'>Due Date</label>
+			</div>
+			<div class='input-container importance-input'>
+				<select name='importance'>
+					<option value='low'>Low</option>
+					<option value='medium'>Medium</option>
+					<option value='high'>High</option>
+				</select>
+				<label for='importance'>Importance</label>
+			</div>
+			<div class='input-container category-input'>
+				<select name='category'></select>
+				<label for='category'>Category</label>
+			</div>
+			<div class='input-container notes-input'>
+				<input type='textarea' name='notes'>
+				<label for='Notes'>Notes</label>
+			</div>
+			<input type='submit' class='submit-button'>
+		</form>
+		<form action='' method='post' class='note-form'>
+			<div class='input-container notes-input'>
+				<input type='textarea' name='notes'>
+				<label for='Notes'>Notes</label>
+			</div>
+			<input type='submit' class='submit-button'>
+		</form>
+	</div>
+	<div class='add-modal-bg'></div>
+</body>
+
+</html>
